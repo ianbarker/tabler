@@ -73,17 +73,17 @@ class Composer
      */
     private function gatherColumnMaxLengths()
     {
-        $maxLengths = [];
         foreach ($this->rawData as $rowId => $row) {
             if (!is_array($row)) {
                 continue;
             }
 
             foreach ($this->columnNames as $columnId) {
-                $maxLengths[$columnId] = max(
-                    Ar::get($maxLengths, $columnId),
+                $this->columnMaxLengths[$columnId] = max(
+                    Ar::get($this->columnMaxLengths, $columnId),
                     strlen(Ar::get($row, $columnId)),
-                    strlen(Ar::get($this->rawHeaders, $columnId))
+                    strlen(Ar::get($this->rawHeaders, $columnId)),
+                    0
                 );
             }
         }
@@ -98,12 +98,10 @@ class Composer
 
         $headers = array_combine(array_keys(current($this->rawData)), $this->rawHeaders);
         foreach ($headers as $columnId => $item) {
-            if (strlen($item) > Ar::get($maxLengths, $columnId)) {
+            if (strlen($item) > Ar::get($this->columnMaxLengths, $columnId)) {
                 $maxLengths[$columnId] = strlen($item);
             }
         }
-
-        $this->columnMaxLengths = $maxLengths;
     }
 
     /**

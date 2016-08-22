@@ -14,6 +14,7 @@ class TablerTest extends \PHPUnit_Framework_TestCase
      *
      * @param $sourceData
      * @param $sourceHeaders
+     * @param $shouldGuess
      * @param $expectedOutput
      */
     public function proceedWithTests($sourceData, $sourceHeaders, $shouldGuess, $expectedOutput)
