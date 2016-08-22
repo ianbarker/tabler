@@ -5,17 +5,40 @@ namespace eznio\tabler;
 
 use eznio\ar\Ar;
 
+/**
+ * Composes table from headers and data array, verifies its structure and "normalizes" it by
+ * setting unset column elements for each row
+ * @package eznio\tabler
+ */
 class Composer
 {
+    /** @var array list of headers before processing */
     protected $rawHeaders;
+
+    /** @var array list of data before processing/normalization */
     protected $rawData;
+
+    /** @var bool if non-existent header names should be taken from header array key names */
     protected $shouldGuessHeaders;
 
+    /** @var array resulting headers after processing */
     protected $headers = [];
+
+    /** @var array resulting data after processing/normalization */
     protected $data = [];
+
+    /** @var array list of all column names found in headers/data */
     protected $columnNames = [];
+
+    /** @var array list of all columns' maximum lengths */
     protected $columnMaxLengths = [];
 
+    /**
+     * Composer constructor.
+     * @param array $headers array of column headers: 'columnId' => 'Column Title'
+     * @param array $data 2D row-starting list of data
+     * @param bool $shouldGuessHeaders if non-existent header names should be taken from header array key names
+     */
     public function __construct(array $headers, array $data, $shouldGuessHeaders = false)
     {
         $this->rawData = $data;
@@ -23,6 +46,10 @@ class Composer
         $this->shouldGuessHeaders = $shouldGuessHeaders;
     }
 
+    /**
+     * Processes all data preparation and normalization.
+     * Generates $headers and $data internal fields
+     */
     public function composeTable()
     {
         $this->gatherColumnNames();
@@ -31,6 +58,9 @@ class Composer
         $this->processData();
     }
 
+    /**
+     * Gathers full possible list of column IDs and names from both headers and data
+     */
     private function gatherColumnNames()
     {
         $this->columnNames = Ar::reduce($this->rawData, function($row, $columns) {
@@ -38,6 +68,9 @@ class Composer
         }, array_keys($this->rawHeaders));
     }
 
+    /**
+     * Gathers columns' max lengths
+     */
     private function gatherColumnMaxLengths()
     {
         $maxLengths = [];
@@ -73,6 +106,9 @@ class Composer
         $this->columnMaxLengths = $maxLengths;
     }
 
+    /**
+     * "Normalizes" headers - adds missing ones and tries to set labels if asked to
+     */
     private function processHeaders()
     {
         $this->headers = Ar::map($this->columnNames, function($column)  {
@@ -84,6 +120,9 @@ class Composer
         });
     }
 
+    /**
+     * "Normalizes" data - adds missing columns if needed
+     */
     private function processData()
     {
         foreach ($this->rawData as $rowId => $row) {
@@ -96,6 +135,7 @@ class Composer
     }
 
     /**
+     * Get list of processed headers
      * @return array
      */
     public function getHeaders()
@@ -104,14 +144,7 @@ class Composer
     }
 
     /**
-     * @param array $headers
-     */
-    public function setHeaders($headers)
-    {
-        $this->headers = $headers;
-    }
-
-    /**
+     * Get processed data grid
      * @return array
      */
     public function getData()
@@ -120,14 +153,7 @@ class Composer
     }
 
     /**
-     * @param array $data
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-    }
-
-    /**
+     * Get list of all column IDs and labels found
      * @return array
      */
     public function getColumnNames()
@@ -136,28 +162,11 @@ class Composer
     }
 
     /**
-     * @param array $columnNames
-     */
-    public function setColumnNames($columnNames)
-    {
-        $this->columnNames = $columnNames;
-    }
-
-    /**
+     * Get list of all columns' max lengths
      * @return array
      */
     public function getColumnMaxLengths()
     {
         return $this->columnMaxLengths;
     }
-
-    /**
-     * @param array $columnMaxLengths
-     */
-    public function setColumnMaxLengths($columnMaxLengths)
-    {
-        $this->columnMaxLengths = $columnMaxLengths;
-    }
-
-
 }

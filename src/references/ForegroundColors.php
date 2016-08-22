@@ -2,7 +2,10 @@
 
 namespace eznio\tabler\references;
 
-
+/**
+ * Foreground colors reference
+ * @package eznio\tabler\references
+ */
 class ForegroundColors
 {
     const DEFAULT_COLOR = 39;

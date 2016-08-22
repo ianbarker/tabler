@@ -21,24 +21,53 @@ class Tabler
     /** @var TableLayout */
     private $tableLayout = null;
 
+    /**
+     * Set array of headers
+     * Each array element should have the following format: 'columnId' => 'Column Label'
+     * @param array $headers
+     * @return $this
+     */
     public function setHeaders(array $headers)
     {
         $this->headers = $headers;
         return $this;
     }
 
+    /**
+     * Set 2D array of data with the following format:
+     * <pre>
+     * [
+     *     'rowId1' => [
+     *         'columnId1' => 'Column 1 value',
+     *         'columnId2' => 'Column 2 value',
+     *     ]
+     * ]
+     * </pre>
+     * @param array $data
+     * @return $this
+     */
     public function setData(array $data)
     {
         $this->data = $data;
         return $this;
     }
 
+    /**
+     * Sets the "Total" line
+     * @param array $totals
+     * @return $this
+     */
     public function setTotals(array $totals)
     {
         $this->totals = $totals;
         return $this;
     }
 
+    /**
+     * Returns TableLayout component with all data required to render table
+     * This should be passed to Renderer::render() method
+     * @return TableLayout
+     */
     public function getTableLayout()
     {
         if (null === $this->tableLayout) {
@@ -47,6 +76,10 @@ class Tabler
         return $this->tableLayout;
     }
 
+    /**
+     * Build TableLayout structure with all data required to render table
+     * @return TableLayout
+     */
     public function buildTableLayout()
     {
         $composer = new Composer($this->headers, $this->data, $this->guessHeaderNames);
@@ -58,6 +91,12 @@ class Tabler
         return $this->tableLayout;
     }
 
+    /**
+     * Sets rendering engine to render the table
+     * @param Renderer $renderer
+     * @return $this
+     * @see \eznio\tabler\interfaces\Renderer
+     */
     public function setRenderer(Renderer $renderer)
     {
         $this->renderer = $renderer;
@@ -65,6 +104,7 @@ class Tabler
     }
 
     /**
+     * Are non-existent column names should be guesses from column IDs?
      * @return boolean
      */
     public function isGuessingHeaderNames()
@@ -73,6 +113,7 @@ class Tabler
     }
 
     /**
+     * Sets if non-existent column names should be guesses from column IDs
      * @param boolean $guessHeaderNames
      * @return Tabler
      */
@@ -82,6 +123,11 @@ class Tabler
         return $this;
     }
 
+    /**
+     * Renders tables using pre-set renderer and given od internally stored TableLayout structure
+     * @param TableLayout|null $tableLayout structure to render
+     * @return string
+     */
     public function render(TableLayout $tableLayout = null)
     {
         if (null === $tableLayout) {

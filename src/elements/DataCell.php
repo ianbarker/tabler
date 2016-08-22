@@ -3,16 +3,22 @@
 namespace eznio\tabler\elements;
 
 
+use eznio\tabler\traits\MaxLengthAware;
 use eznio\tabler\traits\StyleAware;
 
+/**
+ * Data cell rendering element
+ * @package eznio\tabler\elements
+ */
 class DataCell extends Element
 {
-    use StyleAware;
+    use StyleAware, MaxLengthAware;
 
-    protected $data;
-    protected $maxLength;
+    /** @var string|null */
+    protected $data = null;
 
     /**
+     * Returns cell value
      * @return mixed
      */
     public function getData()
@@ -21,30 +27,13 @@ class DataCell extends Element
     }
 
     /**
+     * Sets cell value
      * @param mixed $data
      * @return DataCell
      */
     public function setData($data)
     {
         $this->data = $data;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMaxLength()
-    {
-        return $this->maxLength;
-    }
-
-    /**
-     * @param mixed $maxLength
-     * @return DataCell
-     */
-    public function setMaxLength($maxLength)
-    {
-        $this->maxLength = $maxLength;
         return $this;
     }
 }

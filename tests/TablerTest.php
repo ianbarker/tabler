@@ -6,21 +6,22 @@ namespace eznio\db\tests\helpers;
 use eznio\tabler\renderers\MysqlStyleRenderer;
 use eznio\tabler\Tabler;
 
-class TableFormattingHelperTest extends \PHPUnit_Framework_TestCase
+class TablerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
      * @dataProvider formatterTestData
      *
      * @param $sourceData
-     * @param $sourceHeades
+     * @param $sourceHeaders
      * @param $expectedOutput
      */
-    public function proceedWithTests($sourceData, $sourceHeades, $expectedOutput)
+    public function proceedWithTests($sourceData, $sourceHeaders, $shouldGuess, $expectedOutput)
     {
         $tabler = (new Tabler())
             ->setData($sourceData)
-            ->setHeaders($sourceHeades)
+            ->setHeaders($sourceHeaders)
+            ->setGuessHeaderNames($shouldGuess)
             ->setRenderer(new MysqlStyleRenderer());
 
         $this->assertEquals(
@@ -40,6 +41,7 @@ class TableFormattingHelperTest extends \PHPUnit_Framework_TestCase
                 [
                     'column1', 'column2', 'column3'
                 ],
+                false,
                 <<<TABLE
 +---------+---------+---------+
 | column1 | column2 | column3 |
@@ -58,6 +60,7 @@ TABLE
                 [
                     'column1', 'column2', 'column3'
                 ],
+                false,
                 <<<TABLE
 +---------+---------+---------+
 | column1 | column2 | column3 |
@@ -77,6 +80,7 @@ TABLE
                 [
                     'column1'
                 ],
+                false,
                 <<<TABLE
 +---------+
 | column1 |
@@ -94,7 +98,10 @@ TABLE
                 ],
                 [
                 ],
+                false,
                 <<<TABLE
++
+|
 +
 +
 
@@ -108,6 +115,7 @@ TABLE
                     ['c' => '3'],
                 ],
                 [],
+                true,
                 <<<TABLE
 +---+---+---+
 | a | b | c |
@@ -131,6 +139,7 @@ TABLE
                     'b' => 'Column B',
                     'c' => 'Column C',
                 ],
+                false,
                 <<<TABLE
 +----------+----------+----------+
 | Column A | Column B | Column C |
@@ -153,6 +162,7 @@ TABLE
                     'a' => 'Column A',
                     'd' => 'Column D',
                 ],
+                false,
                 <<<TABLE
 +----------+----------+---+---+
 | Column A | Column D |   |   |

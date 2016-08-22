@@ -3,36 +3,22 @@
 namespace eznio\tabler\elements;
 
 
+use eznio\tabler\traits\MaxLengthAware;
 use eznio\tabler\traits\StyleAware;
 
+/**
+ * Header row cell-representing rendering element
+ * @package eznio\tabler\elements
+ */
 class HeaderCell extends Element
 {
-    use StyleAware;
+    use StyleAware, MaxLengthAware;
 
-    protected $id;
-    protected $title;
-    protected $maxLength;
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+    /** @var string */
+    protected $title = '';
 
     /**
-     * @param mixed $id
-     * @return HeaderCell
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getTitle()
     {
@@ -40,30 +26,12 @@ class HeaderCell extends Element
     }
 
     /**
-     * @param mixed $title
+     * @param string $title
      * @return HeaderCell
      */
     public function setTitle($title)
     {
         $this->title = $title;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMaxLength()
-    {
-        return $this->maxLength;
-    }
-
-    /**
-     * @param mixed $maxLength
-     * @return HeaderCell
-     */
-    public function setMaxLength($maxLength)
-    {
-        $this->maxLength = $maxLength;
         return $this;
     }
 }

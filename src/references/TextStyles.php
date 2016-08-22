@@ -2,7 +2,11 @@
 
 namespace eznio\tabler\references;
 
-
+/**
+ * Text style references.
+ * Text styles can be combined.
+ * @package eznio\tabler\references
+ */
 class TextStyles
 {
     const RESET = 0;

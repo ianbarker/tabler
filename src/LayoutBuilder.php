@@ -17,7 +17,7 @@ class LayoutBuilder
                 ->setId($headerId)
                 ->setTitle($header)
                 ->setMaxLength(Ar::get($composer->getColumnMaxLengths(), $headerId));
-            $headersLine->addHeader($headerId, $headerColumn);
+            $headersLine->addHeaderCell($headerId, $headerColumn);
         });
         return $headersLine;
     }
