@@ -6,6 +6,7 @@ namespace eznio\tabler\renderers;
 use eznio\tabler\elements\DataCell;
 use eznio\tabler\elements\HeaderCell;
 use eznio\tabler\elements\TableLayout;
+use eznio\tabler\elements\TextElement;
 use eznio\tabler\helpers\Styler;
 use eznio\tabler\interfaces\Renderer;
 use eznio\tabler\elements\DataRow;
@@ -34,6 +35,9 @@ class MysqlStyleRenderer implements Renderer
 
     const PADDING_LEFT = 1;
     const PADDING_RIGHT = 1;
+
+    const DEFAULT_TEXT_ALIGNMENT = STR_PAD_RIGHT;
+    const DEFAULT_HEADER_ALIGNMENT = STR_PAD_BOTH;
 
     /** @var TableLayout */
     protected $tableLayout;
@@ -92,7 +96,7 @@ class MysqlStyleRenderer implements Renderer
         foreach ($this->tableLayout->getHeaderLine()->getHeaderCells() as $header) {
             /** @var HeaderCell $header */
             $result .=  $this->addStyles(' '
-                . str_pad($header->getTitle(), $header->getMaxLength(), ' ', STR_PAD_BOTH)
+                . str_pad($header->getTitle(), $header->getMaxLength(), ' ', self::DEFAULT_HEADER_ALIGNMENT)
                 . ' ',
                 array_merge($this->tableLayout->getHeaderLine()->getStyles(), $header->getStyles())
             );
@@ -113,7 +117,7 @@ class MysqlStyleRenderer implements Renderer
         foreach ($row->getCells() as $cell) {
             /** @var DataCell $cell */
             $result .=  $this->addStyles(' '
-                . str_pad($cell->getData(), $cell->getMaxLength(), ' ', STR_PAD_RIGHT)
+                . str_pad($cell->getData(), $cell->getMaxLength(), ' ', $this->getCellTextAlignment($cell))
                 . ' ',
                 array_merge($row->getStyles(), $cell->getStyles())
             );
@@ -141,11 +145,28 @@ class MysqlStyleRenderer implements Renderer
      * @param array $styles array of style constants
      * @return string
      */
-    private function addStyles($element, $styles)
+    protected function addStyles($element, $styles)
     {
         if (0 < count($styles)) {
             return Styler::get($styles) . $element . Styler::getReset();
         }
         return $element;
+    }
+
+    protected function getCellTextAlignment(DataCell $cell)
+    {
+        $cellId = $cell->getId();
+        $columnAlignment = $this->tableLayout->getHeaderLine()->getHeaderCell($cellId)->getTextAlignment();
+        $cellAlignment = $cell->getTextAlignment();
+
+        $alignment = self::DEFAULT_TEXT_ALIGNMENT;
+        if (TextElement::TEXT_ALIGN_INHERIT !== $columnAlignment) {
+            $alignment = $columnAlignment;
+        }
+        if (TextElement::TEXT_ALIGN_INHERIT !== $cellAlignment) {
+            $alignment = $cellAlignment;
+        }
+
+        return $alignment;
     }
 }

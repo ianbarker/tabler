@@ -10,7 +10,7 @@ use eznio\tabler\traits\StyleAware;
  * Data cell rendering element
  * @package eznio\tabler\elements
  */
-class DataCell extends Element
+class DataCell extends TextElement
 {
     use StyleAware, MaxLengthAware;
 

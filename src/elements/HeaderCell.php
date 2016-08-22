@@ -10,7 +10,7 @@ use eznio\tabler\traits\StyleAware;
  * Header row cell-representing rendering element
  * @package eznio\tabler\elements
  */
-class HeaderCell extends Element
+class HeaderCell extends TextElement
 {
     use StyleAware, MaxLengthAware;
 
