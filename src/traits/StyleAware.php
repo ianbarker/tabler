@@ -9,7 +9,7 @@ use eznio\tabler\references\ForegroundColors;
 
 trait StyleAware
 {
-    protected $styles;
+    protected $styles = [];
 
     public function addStyle($style)
     {
@@ -23,7 +23,7 @@ trait StyleAware
 
     public function setStyles($styles)
     {
-        $this->styles = array_combine($styles, $styles);
+        $this->styles = array_merge($this->styles, $styles);
     }
 
     public function getStyles()

@@ -6,6 +6,7 @@ namespace eznio\tabler\renderers;
 use eznio\tabler\elements\DataCell;
 use eznio\tabler\elements\HeaderCell;
 use eznio\tabler\elements\TableLayout;
+use eznio\tabler\helpers\Styler;
 use eznio\tabler\interfaces\Renderer;
 use eznio\tabler\elements\DataRow;
 
@@ -35,9 +36,11 @@ class MysqlStyleRenderer implements Renderer
         return implode(PHP_EOL, $result) . PHP_EOL;
     }
 
-    public function renderSeparator()
+    protected function renderSeparator()
     {
-        $result = self::CROSSING;
+        $result = '';
+
+        $result .= self::CROSSING;
         foreach ($this->tableLayout->getHeaderLine()->getHeaders() as $header) {
             /** @var HeaderCell $header */
             $result .=
@@ -45,41 +48,60 @@ class MysqlStyleRenderer implements Renderer
                 . self::CROSSING;
 
         }
-        return $result;
+
+        if (0 < count($this->tableLayout->getStyles())) {
+            $result .= Styler::getReset();
+        }
+
+        return $this->addStyles($result, $this->tableLayout->getStyles());
     }
 
-    public function renderHeaderLine()
+    protected function renderHeaderLine()
     {
-        $result = self::VERTICAL_LINE;
+        $result = $this->addStyles(self::VERTICAL_LINE, $this->tableLayout->getStyles());
+
         foreach ($this->tableLayout->getHeaderLine()->getHeaders() as $header) {
             /** @var HeaderCell $header */
-            $result .= ' '
+            $result .=  $this->addStyles(' '
                 . str_pad($header->getTitle(), $header->getMaxLength(), ' ', STR_PAD_BOTH)
-                . ' '
-                . self::VERTICAL_LINE;
+                . ' ',
+                array_merge($this->tableLayout->getHeaderLine()->getStyles(), $header->getStyles())
+            );
+            $result .= $this->addStyles(self::VERTICAL_LINE, $this->tableLayout->getStyles());
         }
         return $result;
     }
 
-    function renderDataRow(DataRow $row)
+    protected function renderDataRow(DataRow $row)
     {
-        $result = self::VERTICAL_LINE;
+        $result = $this->addStyles(self::VERTICAL_LINE, $this->tableLayout->getStyles());
+
         foreach ($row->getCells() as $cell) {
             /** @var DataCell $cell */
-            $result .= ' '
+            $result .=  $this->addStyles(' '
                 . str_pad($cell->getData(), $cell->getMaxLength(), ' ', STR_PAD_RIGHT)
-                . ' '
-                . self::VERTICAL_LINE;
+                . ' ',
+                array_merge($row->getStyles(), $cell->getStyles())
+            );
+            $result .= $this->addStyles(self::VERTICAL_LINE, $this->tableLayout->getStyles());
         }
         return $result;
     }
 
-    public function renderDataGrid()
+    protected function renderDataGrid()
     {
         $result = [];
         foreach ($this->tableLayout->getDataGrid()->getRows() as $row) {
             $result[] = $this->renderDataRow($row);
         }
         return $result;
+    }
+
+    private function addStyles($element, $styles)
+    {
+        if (0 < count($styles)) {
+            return Styler::get($styles) . $element . Styler::getReset();
+        }
+        return $element;
     }
 }

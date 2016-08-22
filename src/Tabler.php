@@ -16,6 +16,7 @@ class Tabler
     private $data = [];
     private $totals = [];
     private $renderer = null;
+    private $guessHeaderNames = false;
 
     /** @var TableLayout */
     private $tableLayout = null;
@@ -38,14 +39,17 @@ class Tabler
         return $this;
     }
 
-    public function getTableLayour()
+    public function getTableLayout()
     {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
         return $this->tableLayout;
     }
 
     public function buildTableLayout()
     {
-        $composer = new Composer($this->headers, $this->data);
+        $composer = new Composer($this->headers, $this->data, $this->guessHeaderNames);
         $composer->composeTable();
 
         $builder = new LayoutBuilder();
@@ -57,6 +61,24 @@ class Tabler
     public function setRenderer(Renderer $renderer)
     {
         $this->renderer = $renderer;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isGuessingHeaderNames()
+    {
+        return $this->guessHeaderNames;
+    }
+
+    /**
+     * @param boolean $guessHeaderNames
+     * @return Tabler
+     */
+    public function setGuessHeaderNames($guessHeaderNames)
+    {
+        $this->guessHeaderNames = $guessHeaderNames;
         return $this;
     }
 

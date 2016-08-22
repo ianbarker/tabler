@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/eznio/ar.git",
-                "reference": "8301dd2401e2e19721b3d5fc957f2db6888e4055"
+                "reference": "2c5bd6c7feb178dd5ffb5e3124e6bc134348a8a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eznio/ar/zipball/8301dd2401e2e19721b3d5fc957f2db6888e4055",
-                "reference": "8301dd2401e2e19721b3d5fc957f2db6888e4055",
+                "url": "https://api.github.com/repos/eznio/ar/zipball/2c5bd6c7feb178dd5ffb5e3124e6bc134348a8a8",
+                "reference": "2c5bd6c7feb178dd5ffb5e3124e6bc134348a8a8",
                 "shasum": ""
             },
             "require": {
@@ -46,7 +46,7 @@
                 "reduce",
                 "util"
             ],
-            "time": "2016-08-19 12:18:28"
+            "time": "2016-08-22 10:37:47"
         }
     ],
     "packages-dev": [

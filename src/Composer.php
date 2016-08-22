@@ -56,11 +56,11 @@ class Composer
         }
 
         if (0 === count($this->rawHeaders)) {
-            return $maxLengths;
+            return;
         }
 
         if (count($this->rawHeaders) !== count(array_keys(current($this->rawData)))) {
-            return $maxLengths;
+            return;
         }
 
         $headers = array_combine(array_keys(current($this->rawData)), $this->rawHeaders);
@@ -75,11 +75,13 @@ class Composer
 
     private function processHeaders()
     {
-        if ($this->shouldGuessHeaders) {
-            $this->headers = array_combine($this->columnNames, $this->columnNames);
-        } else {
-            $this->headers = $this->rawHeaders;
-        }
+        $this->headers = Ar::map($this->columnNames, function($column)  {
+            $headerName = Ar::get($this->rawHeaders, $column);
+            if (null === $headerName) {
+                $headerName = $this->shouldGuessHeaders ? $column : '';
+            }
+            return [$column => $headerName];
+        });
     }
 
     private function processData()

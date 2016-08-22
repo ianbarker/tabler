@@ -3,8 +3,12 @@
 namespace eznio\tabler\elements;
 
 
+use eznio\tabler\traits\StyleAware;
+
 class DataCell extends Element
 {
+    use StyleAware;
+
     protected $data;
     protected $maxLength;
 
