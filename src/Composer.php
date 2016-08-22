@@ -73,35 +73,17 @@ class Composer
      */
     private function gatherColumnMaxLengths()
     {
-        foreach ($this->rawData as $rowId => $row) {
-            if (!is_array($row)) {
-                continue;
-            }
+        $this->gatherColumnMaxLengthsFromData();
 
-            foreach ($this->columnNames as $columnId) {
-                $this->columnMaxLengths[$columnId] = max(
-                    Ar::get($this->columnMaxLengths, $columnId),
-                    strlen(Ar::get($row, $columnId)),
-                    strlen(Ar::get($this->rawHeaders, $columnId)),
-                    0
-                );
-            }
-        }
-
-        if (0 === count($this->rawHeaders)) {
+        if ($this->noHeadersPassed()) {
             return;
         }
 
-        if (count($this->rawHeaders) !== count(array_keys(current($this->rawData)))) {
+        if ($this->rawHeadersHaveWrongCount()) {
             return;
         }
 
-        $headers = array_combine(array_keys(current($this->rawData)), $this->rawHeaders);
-        foreach ($headers as $columnId => $item) {
-            if (strlen($item) > Ar::get($this->columnMaxLengths, $columnId)) {
-                $maxLengths[$columnId] = strlen($item);
-            }
-        }
+        $this->gatherColumnMaxLengthsFromHeaders();
     }
 
     /**
@@ -166,5 +148,52 @@ class Composer
     public function getColumnMaxLengths()
     {
         return $this->columnMaxLengths;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function gatherColumnMaxLengthsFromData()
+    {
+        foreach ($this->rawData as $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+
+            foreach ($this->columnNames as $columnId) {
+                $this->columnMaxLengths[$columnId] = max(
+                    Ar::get($this->columnMaxLengths, $columnId),
+                    strlen(Ar::get($row, $columnId)),
+                    strlen(Ar::get($this->rawHeaders, $columnId)),
+                    0
+                );
+            }
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    private function noHeadersPassed()
+    {
+        return 0 === count($this->rawHeaders);
+    }
+
+    /**
+     * @return bool
+     */
+    private function rawHeadersHaveWrongCount()
+    {
+        return count($this->rawHeaders) !== count(array_keys(current($this->rawData)));
+    }
+
+    private function gatherColumnMaxLengthsFromHeaders()
+    {
+        $headers = array_combine(array_keys(current($this->rawData)), $this->rawHeaders);
+        foreach ($headers as $columnId => $item) {
+            if (strlen($item) > Ar::get($this->columnMaxLengths, $columnId)) {
+                $this->columnMaxLengths[$columnId] = strlen($item);
+            }
+        }
     }
 }
