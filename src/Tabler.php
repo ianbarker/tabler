@@ -336,6 +336,48 @@ class Tabler
     }
 
     /**
+     * Set styles for odd rows
+     * @param array $styles
+     * @return $this
+     */
+    public function setOddRowsStyles(array $styles)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        $rows = $this->tableLayout->getDataGrid()->getRows();
+        $oddRows = Ar::filter($rows, function(DataRow $row) {
+            return DataRow::ORDER_ODD === $row->getOrder();
+        });
+
+        Ar::each($oddRows, function(DataRow $row) use ($styles) {
+            $row->setStyles($styles);
+        });
+        return $this;
+    }
+
+    /**
+     * Set styles for even rows
+     * @param array $styles
+     * @return $this
+     */
+    public function setEvenRowsStyles(array $styles)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        $rows = $this->tableLayout->getDataGrid()->getRows();
+        $oddRows = Ar::filter($rows, function(DataRow $row) {
+            return DataRow::ORDER_EVEN === $row->getOrder();
+        });
+
+        Ar::each($oddRows, function(DataRow $row) use ($styles) {
+            $row->setStyles($styles);
+        });
+        return $this;
+    }
+
+    /**
      * Set single cell styles
      * @param $columnId
      * @param $rowId
