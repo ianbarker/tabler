@@ -3,17 +3,12 @@
 namespace eznio\tabler\elements;
 
 
-use eznio\tabler\traits\MaxLengthAware;
-use eznio\tabler\traits\StyleAware;
-
 /**
  * Header row cell-representing rendering element
  * @package eznio\tabler\elements
  */
-class HeaderCell extends TextElement
+class HeaderCell extends Cell
 {
-    use StyleAware, MaxLengthAware;
-
     /** @var string */
     protected $title = '';
 

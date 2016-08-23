@@ -73,7 +73,7 @@ class MysqlStyleRenderer implements Renderer
         foreach ($this->tableLayout->getHeaderLine()->getHeaderCells() as $header) {
             /** @var HeaderCell $header */
             $result .=
-                str_repeat(self::HORIZONTAL_LINE, $header->getMaxLength() + self::PADDING_LEFT + self::PADDING_RIGHT)
+                str_repeat(self::HORIZONTAL_LINE, $header->getLength() + self::PADDING_LEFT + self::PADDING_RIGHT)
                 . self::CROSSING;
 
         }
@@ -96,7 +96,7 @@ class MysqlStyleRenderer implements Renderer
         foreach ($this->tableLayout->getHeaderLine()->getHeaderCells() as $header) {
             /** @var HeaderCell $header */
             $result .=  $this->addStyles(' '
-                . str_pad($header->getTitle(), $header->getMaxLength(), ' ', self::DEFAULT_HEADER_ALIGNMENT)
+                . str_pad($header->getTitle(), $header->getLength(), ' ', self::DEFAULT_HEADER_ALIGNMENT)
                 . ' ',
                 array_merge($this->tableLayout->getHeaderLine()->getStyles(), $header->getStyles())
             );
@@ -117,7 +117,7 @@ class MysqlStyleRenderer implements Renderer
         foreach ($row->getCells() as $cell) {
             /** @var DataCell $cell */
             $result .=  $this->addStyles(' '
-                . str_pad($cell->getData(), $cell->getMaxLength(), ' ', $this->getCellTextAlignment($cell))
+                . str_pad($cell->getData(), $cell->getLength(), ' ', $this->getCellTextAlignment($cell))
                 . ' ',
                 array_merge($row->getStyles(), $cell->getStyles())
             );

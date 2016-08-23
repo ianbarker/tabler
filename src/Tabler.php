@@ -304,6 +304,34 @@ class Tabler
     }
 
     /**
+     * Set single column minimum length (width)
+     * @param $columnId
+     * @param $minLength
+     * @return $this
+     */
+    public function setColumnMinLength($columnId, $minLength)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+
+        $headerCell = $this->tableLayout->getHeaderLine()->getHeaderCell($columnId);
+        if (null !== $headerCell) {
+            $headerCell->setMinLength($minLength);
+        }
+
+        $rows = $this->tableLayout->getDataGrid()->getRows();
+        Ar::each($rows, function(DataRow $row) use ($columnId, $minLength) {
+            $cell = $row->getCell($columnId);
+            if (null !== $cell) {
+                $cell->setMinLength($minLength);
+            }
+        });
+
+        return $this;
+    }
+
+    /**
      * Get single row styles
      * @param $rowId
      * @param array $styles
@@ -461,6 +489,5 @@ class Tabler
         }
         $cell = $row->getCell($columnId);
         return null === $cell ? $cell : $cell->getTextAlignment();
-
     }
 }

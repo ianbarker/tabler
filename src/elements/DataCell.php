@@ -3,17 +3,12 @@
 namespace eznio\tabler\elements;
 
 
-use eznio\tabler\traits\MaxLengthAware;
-use eznio\tabler\traits\StyleAware;
-
 /**
  * Data cell rendering element
  * @package eznio\tabler\elements
  */
-class DataCell extends TextElement
+class DataCell extends Cell
 {
-    use StyleAware, MaxLengthAware;
-
     /** @var string|null */
     protected $data = null;
 
