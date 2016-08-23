@@ -3,8 +3,10 @@
 namespace eznio\tabler;
 
 
+use eznio\tabler\elements\DataRow;
 use eznio\tabler\elements\TableLayout;
 use eznio\tabler\interfaces\Renderer;
+use eznio\ar\Ar;
 
 /**
  * Overall package facade
@@ -12,10 +14,19 @@ use eznio\tabler\interfaces\Renderer;
  */
 class Tabler
 {
+    /** @var array table headers */
     private $headers = [];
+
+    /** @var array table data */
     private $data = [];
+
+    /** @var array "Total" line */
     private $totals = [];
+
+    /** @var Renderer|null rendering engine*/
     private $renderer = null;
+
+    /** @var bool whether to get missing column names from column IDs */
     private $guessHeaderNames = false;
 
     /** @var TableLayout */
@@ -115,7 +126,7 @@ class Tabler
     /**
      * Sets if non-existent column names should be guesses from column IDs
      * @param boolean $guessHeaderNames
-     * @return Tabler
+     * @return $this
      */
     public function setGuessHeaderNames($guessHeaderNames)
     {
@@ -131,11 +142,240 @@ class Tabler
     public function render(TableLayout $tableLayout = null)
     {
         if (null === $tableLayout) {
+            $tableLayout = $this->tableLayout;
+        }
+        if (null === $tableLayout) {
             $tableLayout = $this->buildTableLayout();
         }
         if (! $this->renderer instanceof Renderer) {
             throw new \RuntimeException('Set renderer class before rendering table');
         }
         return $this->renderer->render($tableLayout);
+    }
+
+    // Some styling shortcuts
+
+    /**
+     * Set border background color
+     * @param $color
+     * @return $this
+     */
+    public function setBorderBackgroundColor($color)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        $this->tableLayout->setBackgroundColor($color);
+        return $this;
+    }
+
+    /**
+     * Get border background color
+     * @return int
+     */
+    public function getBorderBackgroundColor()
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        return $this->tableLayout->getBackgroundColor();
+    }
+
+    /**
+     * Set border foreground color
+     * @param $color
+     * @return $this
+     */
+    public function setBorderForegroundColor($color)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        $this->tableLayout->setForegroundColor($color);
+        return $this;
+    }
+
+    /**
+     * Get border background color
+     * @return int
+     */
+    public function getBorderForegroundColor()
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        return $this->tableLayout->getForegroundColor();
+    }
+
+    /**
+     * Set whole heading line styles
+     * @param array $styles
+     * @return $this
+     */
+    public function setHeadingLineStyles(array $styles)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        $this->tableLayout->getHeaderLine()->setStyles($styles);
+        return $this;
+    }
+
+    /**
+     * Get whole heading line styles
+     * @return array
+     */
+    public function getHeadingLineStyles()
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        return $this->tableLayout->getHeaderLine()->getStyles();
+    }
+
+    /**
+     * Set heading cell styles
+     * @param $columnId
+     * @param array $styles
+     * @return $this
+     */
+    public function setHeadingCellStyles($columnId, array $styles)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        $this->tableLayout->getHeaderLine()->getHeaderCell($columnId)->setStyles($styles);
+        return $this;
+    }
+
+    /**
+     * Get heading cell styles
+     */
+    public function getHeadingCellStyles($columnId)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        return $this->tableLayout->getHeaderLine()->getHeaderCell($columnId)->getStyles();
+    }
+
+    /**
+     * Set whole column styles
+     * @param $columnId
+     * @param array $styles
+     * @return $this
+     */
+    public function setColumnStyles($columnId, array $styles)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        Ar::each ($this->getTableLayout()->getDataGrid()->getRows(), function (DataRow $row) use ($columnId, $styles) {
+            $row->getCell($columnId)->setStyles($styles);
+        });
+        return $this;
+    }
+
+    /**
+     * Set single column text alignment
+     * @param $columnId
+     * @param $alignment
+     * @return $this
+     */
+    public function setColumnTextAlignment($columnId, $alignment)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        $this->tableLayout->getHeaderLine()->getHeaderCell($columnId)->setTextAlignment($alignment);
+        return $this;
+    }
+
+    /**
+     * Get single row styles
+     * @param $rowId
+     * @param array $styles
+     * @return $this
+     */
+    public function setRowStyles($rowId, array $styles)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        $this->tableLayout->getDataGrid()->getRow($rowId)->setStyles($styles);
+        return $this;
+    }
+
+    /**
+     * Get single row styles
+     * @param $rowId
+     * @return array
+     */
+    public function getRowStyles($rowId)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        return $this->tableLayout->getDataGrid()->getRow($rowId)->getStyles();
+    }
+
+    /**
+     * Set single cell styles
+     * @param $columnId
+     * @param $rowId
+     * @param array $styles
+     * @return $this
+     */
+    public function setCellStyles($columnId, $rowId, array $styles)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        $this->tableLayout->getDataGrid()->getRow($rowId)->getCell($columnId)->setStyles($styles);
+        return $this;
+    }
+
+    /**
+     * Get single cell styles
+     * @param $columnId
+     * @param $rowId
+     * @return array
+     */
+    public function getCellStyles($columnId, $rowId)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        return $this->tableLayout->getDataGrid()->getRow($rowId)->getCell($columnId)->getStyles();
+    }
+
+    /**
+     * Set single cell text alignment
+     * @param $columnId
+     * @param $rowId
+     * @param $alignment
+     * @return $this
+     */
+    public function setCellTextAlignment($columnId, $rowId, $alignment)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        $this->tableLayout->getDataGrid()->getRow($rowId)->getCell($columnId)->setTextAlignment($alignment);
+        return $this;
+    }
+
+    /**
+     * Get single cell text alignment
+     * @param $columnId
+     * @param $rowId
+     * @return int
+     */
+    public function getCellTextAlignment($columnId, $rowId)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+        return $this->tableLayout->getDataGrid()->getRow($rowId)->getCell($columnId)->getTextAlignment();
     }
 }

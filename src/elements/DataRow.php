@@ -53,7 +53,7 @@ class DataRow extends Element
     /**
      * Get cell by it's ID
      * @param $cellId
-     * @return mixed
+     * @return DataCell|null
      */
     public function getCell($cellId)
     {

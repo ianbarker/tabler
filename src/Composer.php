@@ -74,15 +74,7 @@ class Composer
     private function gatherColumnMaxLengths()
     {
         $this->gatherColumnMaxLengthsFromData();
-
-        if ($this->noHeadersPassed()) {
-            return;
-        }
-
-        if ($this->rawHeadersHaveWrongCount()) {
-            return;
-        }
-
+        $this->gatherColumnMaxLengthsFromGuessedHeaderNames();
         $this->gatherColumnMaxLengthsFromHeaders();
     }
 
@@ -151,7 +143,7 @@ class Composer
     }
 
     /**
-     * @return mixed
+     * Gathers column names' lengths from data
      */
     private function gatherColumnMaxLengthsFromData()
     {
@@ -172,28 +164,31 @@ class Composer
     }
 
     /**
-     * @return bool
+     * Gathers column names' lengths from passed headers
      */
-    private function noHeadersPassed()
+    private function gatherColumnMaxLengthsFromHeaders()
     {
-        return 0 === count($this->rawHeaders);
+        foreach ($this->rawHeaders as $columnId => $item) {
+            if (strlen($item) > Ar::get($this->columnMaxLengths, $columnId)) {
+                $this->columnMaxLengths[$columnId] = strlen($item);
+            }
+        }
     }
 
     /**
-     * @return bool
+     * Gathers column names' lengths from auto-guessed headers (if auto-guessing is enabled)
      */
-    private function rawHeadersHaveWrongCount()
+    private function gatherColumnMaxLengthsFromGuessedHeaderNames()
     {
-        return count($this->rawHeaders) !== count(array_keys(current($this->rawData)));
-    }
-
-    private function gatherColumnMaxLengthsFromHeaders()
-    {
-        $headers = array_combine(array_keys(current($this->rawData)), $this->rawHeaders);
+        if (false === $this->shouldGuessHeaders) {
+            return;
+        }
+        $headers = array_combine(array_values($this->columnNames), array_values($this->columnNames));
         foreach ($headers as $columnId => $item) {
             if (strlen($item) > Ar::get($this->columnMaxLengths, $columnId)) {
                 $this->columnMaxLengths[$columnId] = strlen($item);
             }
         }
+
     }
 }

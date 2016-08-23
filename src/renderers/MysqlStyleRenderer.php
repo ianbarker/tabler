@@ -6,10 +6,10 @@ namespace eznio\tabler\renderers;
 use eznio\tabler\elements\DataCell;
 use eznio\tabler\elements\HeaderCell;
 use eznio\tabler\elements\TableLayout;
-use eznio\tabler\elements\TextElement;
 use eznio\tabler\helpers\Styler;
 use eznio\tabler\interfaces\Renderer;
 use eznio\tabler\elements\DataRow;
+use eznio\tabler\references\TextAlignments;
 
 /**
  * Mysql-style table renderer
@@ -160,10 +160,10 @@ class MysqlStyleRenderer implements Renderer
         $cellAlignment = $cell->getTextAlignment();
 
         $alignment = self::DEFAULT_TEXT_ALIGNMENT;
-        if (TextElement::TEXT_ALIGN_INHERIT !== $columnAlignment) {
+        if (TextAlignments::TEXT_ALIGN_INHERIT !== $columnAlignment) {
             $alignment = $columnAlignment;
         }
-        if (TextElement::TEXT_ALIGN_INHERIT !== $cellAlignment) {
+        if (TextAlignments::TEXT_ALIGN_INHERIT !== $cellAlignment) {
             $alignment = $cellAlignment;
         }
 
