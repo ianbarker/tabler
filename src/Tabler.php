@@ -244,19 +244,25 @@ class Tabler
         if (null === $this->tableLayout) {
             $this->buildTableLayout();
         }
-        $this->tableLayout->getHeaderLine()->getHeaderCell($columnId)->setStyles($styles);
+        $headerCell = $this->tableLayout->getHeaderLine()->getHeaderCell($columnId);
+        if (null !== $headerCell) {
+            $headerCell->setStyles($styles);
+        }
         return $this;
     }
 
     /**
      * Get heading cell styles
+     * @param $columnId
+     * @return array
      */
     public function getHeadingCellStyles($columnId)
     {
         if (null === $this->tableLayout) {
             $this->buildTableLayout();
         }
-        return $this->tableLayout->getHeaderLine()->getHeaderCell($columnId)->getStyles();
+        $headerCell = $this->tableLayout->getHeaderLine()->getHeaderCell($columnId);
+        return null === $headerCell ? [] : $headerCell->getStyles();
     }
 
     /**
@@ -271,7 +277,10 @@ class Tabler
             $this->buildTableLayout();
         }
         Ar::each ($this->getTableLayout()->getDataGrid()->getRows(), function (DataRow $row) use ($columnId, $styles) {
-            $row->getCell($columnId)->setStyles($styles);
+            $cell = $row->getCell($columnId);
+            if (null !== $cell) {
+               $cell->setStyles($styles);
+            }
         });
         return $this;
     }
@@ -287,7 +296,10 @@ class Tabler
         if (null === $this->tableLayout) {
             $this->buildTableLayout();
         }
-        $this->tableLayout->getHeaderLine()->getHeaderCell($columnId)->setTextAlignment($alignment);
+        $headerCell = $this->tableLayout->getHeaderLine()->getHeaderCell($columnId);
+        if (null !== $headerCell) {
+            $headerCell->setTextAlignment($alignment);
+        }
         return $this;
     }
 
@@ -302,7 +314,10 @@ class Tabler
         if (null === $this->tableLayout) {
             $this->buildTableLayout();
         }
-        $this->tableLayout->getDataGrid()->getRow($rowId)->setStyles($styles);
+        $row = $this->tableLayout->getDataGrid()->getRow($rowId);
+        if (null !== $row) {
+            $row->setStyles($styles);
+        }
         return $this;
     }
 
@@ -316,7 +331,8 @@ class Tabler
         if (null === $this->tableLayout) {
             $this->buildTableLayout();
         }
-        return $this->tableLayout->getDataGrid()->getRow($rowId)->getStyles();
+        $row = $this->tableLayout->getDataGrid()->getRow($rowId);
+        return null === $row ? $row : $row->getStyles();
     }
 
     /**
@@ -331,7 +347,15 @@ class Tabler
         if (null === $this->tableLayout) {
             $this->buildTableLayout();
         }
-        $this->tableLayout->getDataGrid()->getRow($rowId)->getCell($columnId)->setStyles($styles);
+        $row = $this->tableLayout->getDataGrid()->getRow($rowId);
+        if (null === $row) {
+            return $this;
+        }
+        $cell = $row->getCell($columnId);
+        if (null === $cell) {
+            return $this;
+        }
+        $cell->setStyles($styles);
         return $this;
     }
 
@@ -346,7 +370,12 @@ class Tabler
         if (null === $this->tableLayout) {
             $this->buildTableLayout();
         }
-        return $this->tableLayout->getDataGrid()->getRow($rowId)->getCell($columnId)->getStyles();
+        $row = $this->tableLayout->getDataGrid()->getRow($rowId);
+        if (null === $row) {
+            return [];
+        }
+        $cell = $row->getCell($columnId);
+        return null === $cell ? $cell : $cell->getStyles();
     }
 
     /**
@@ -361,7 +390,15 @@ class Tabler
         if (null === $this->tableLayout) {
             $this->buildTableLayout();
         }
-        $this->tableLayout->getDataGrid()->getRow($rowId)->getCell($columnId)->setTextAlignment($alignment);
+        $row = $this->tableLayout->getDataGrid()->getRow($rowId);
+        if (null === $row) {
+            return $this;
+        }
+        $cell = $row->getCell($columnId);
+        if (null === $cell) {
+            return $this;
+        }
+        $cell->setTextAlignment($alignment);
         return $this;
     }
 
@@ -376,6 +413,12 @@ class Tabler
         if (null === $this->tableLayout) {
             $this->buildTableLayout();
         }
-        return $this->tableLayout->getDataGrid()->getRow($rowId)->getCell($columnId)->getTextAlignment();
+        $row = $this->tableLayout->getDataGrid()->getRow($rowId);
+        if (null === $row) {
+            return null;
+        }
+        $cell = $row->getCell($columnId);
+        return null === $cell ? $cell : $cell->getTextAlignment();
+
     }
 }
