@@ -331,6 +331,77 @@ class Tabler
         return $this;
     }
 
+    public function setColumnLeftPadding($columnId, $leftPadding)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+
+        $headerCell = $this->tableLayout->getHeaderLine()->getHeaderCell($columnId);
+        if (null !== $headerCell) {
+            $headerCell->setLeftPadding($leftPadding);
+        }
+
+        $rows = $this->tableLayout->getDataGrid()->getRows();
+        Ar::each($rows, function(DataRow $row) use ($columnId, $leftPadding) {
+            $cell = $row->getCell($columnId);
+            if (null !== $cell) {
+                $cell->setLeftPadding($leftPadding);
+            }
+        });
+
+        return $this;
+    }
+
+    public function getColumnLeftPadding($columnId)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+
+        $headerCell = $this->tableLayout->getHeaderLine()->getHeaderCell($columnId);
+        return null !== $headerCell ? $headerCell->getLeftPadding() : 0;
+    }
+
+    public function setColumnRightPadding($columnId, $rightPadding)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+
+        $headerCell = $this->tableLayout->getHeaderLine()->getHeaderCell($columnId);
+        if (null !== $headerCell) {
+            $headerCell->setRightPadding($rightPadding);
+        }
+
+        $rows = $this->tableLayout->getDataGrid()->getRows();
+        Ar::each($rows, function(DataRow $row) use ($columnId, $rightPadding) {
+            $cell = $row->getCell($columnId);
+            if (null !== $cell) {
+                $cell->setRightPadding($rightPadding);
+            }
+        });
+
+        return $this;
+    }
+
+    public function getColumnRightPadding($columnId)
+    {
+        if (null === $this->tableLayout) {
+            $this->buildTableLayout();
+        }
+
+        $headerCell = $this->tableLayout->getHeaderLine()->getHeaderCell($columnId);
+        return null !== $headerCell ? $headerCell->getRightPadding() : 0;
+    }
+
+    public function setColumnPadding($columnId, $padding)
+    {
+        $this->setColumnLeftPadding($columnId, $padding);
+        $this->setColumnRightPadding($columnId, $padding);
+        return $this;
+    }
+
     /**
      * Get single row styles
      * @param $rowId

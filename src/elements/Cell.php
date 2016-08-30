@@ -3,6 +3,7 @@
 namespace eznio\tabler\elements;
 
 
+use eznio\tabler\references\Defaults;
 use eznio\tabler\traits\StyleAware;
 
 class Cell extends Element
@@ -17,6 +18,12 @@ class Cell extends Element
 
     /** @var int */
     private $textAlignment = null;
+
+    /** @var int */
+    private $leftPadding = Defaults::PADDING_LEFT;
+
+    /** @var int */
+    private $rightPadding = Defaults::PADDING_RIGHT;
 
     /**
      * @return int
@@ -73,10 +80,47 @@ class Cell extends Element
     }
 
     /**
+     * Returns calculated field length
      * @return int
      */
     public function getLength()
     {
         return $this->getMaxLength() < $this->getMinLength() ? $this->getMinLength() : $this->getMaxLength();
+    }
+
+    /**
+     * @return int
+     */
+    public function getLeftPadding()
+    {
+        return $this->leftPadding;
+    }
+
+    /**
+     * @param int $leftPadding
+     * @return $this
+     */
+    public function setLeftPadding($leftPadding)
+    {
+        $this->leftPadding = (int) $leftPadding > 0 ? (int) $leftPadding : 0;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRightPadding()
+    {
+        return $this->rightPadding;
+    }
+
+    /**
+     * @param int $rightPadding
+     * @return $this
+     */
+    public function setRightPadding($rightPadding)
+    {
+        $this->rightPadding = (int) $rightPadding > 0 ? (int) $rightPadding : 0;
+        return $this;
     }
 }

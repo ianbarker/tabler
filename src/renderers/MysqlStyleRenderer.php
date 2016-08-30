@@ -9,6 +9,7 @@ use eznio\tabler\elements\TableLayout;
 use eznio\tabler\helpers\Styler;
 use eznio\tabler\interfaces\Renderer;
 use eznio\tabler\elements\DataRow;
+use eznio\tabler\references\Defaults;
 use eznio\tabler\references\TextAlignments;
 
 /**
@@ -32,12 +33,6 @@ class MysqlStyleRenderer implements Renderer
     const VERTICAL_LINE = '|';
     const HORIZONTAL_LINE = '-';
     const CROSSING = '+';
-
-    const PADDING_LEFT = 1;
-    const PADDING_RIGHT = 1;
-
-    const DEFAULT_TEXT_ALIGNMENT = STR_PAD_RIGHT;
-    const DEFAULT_HEADER_ALIGNMENT = STR_PAD_BOTH;
 
     /** @var TableLayout */
     protected $tableLayout;
@@ -73,7 +68,10 @@ class MysqlStyleRenderer implements Renderer
         foreach ($this->tableLayout->getHeaderLine()->getHeaderCells() as $header) {
             /** @var HeaderCell $header */
             $result .=
-                str_repeat(self::HORIZONTAL_LINE, $header->getLength() + self::PADDING_LEFT + self::PADDING_RIGHT)
+                str_repeat(
+                    self::HORIZONTAL_LINE,
+                    $header->getLength() + $header->getLeftPadding() + $header->getRightPadding()
+                )
                 . self::CROSSING;
 
         }
@@ -95,9 +93,23 @@ class MysqlStyleRenderer implements Renderer
 
         foreach ($this->tableLayout->getHeaderLine()->getHeaderCells() as $header) {
             /** @var HeaderCell $header */
-            $result .=  $this->addStyles(' '
-                . str_pad($header->getTitle(), $header->getLength(), ' ', self::DEFAULT_HEADER_ALIGNMENT)
-                . ' ',
+            $result .=  $this->addStyles(
+                str_pad(
+                    '',
+                    $header->getLeftPadding(),
+                    ' '
+                ) .
+                str_pad(
+                    $header->getTitle(),
+                    $header->getLength(),
+                    ' ',
+                    Defaults::HEADER_ALIGNMENT
+                ) .
+                str_pad(
+                    '',
+                    $header->getRightPadding(),
+                    ' '
+                ),
                 array_merge($this->tableLayout->getHeaderLine()->getStyles(), $header->getStyles())
             );
             $result .= $this->addStyles(self::VERTICAL_LINE, $this->tableLayout->getStyles());
@@ -116,9 +128,19 @@ class MysqlStyleRenderer implements Renderer
 
         foreach ($row->getCells() as $cell) {
             /** @var DataCell $cell */
-            $result .=  $this->addStyles(' '
-                . str_pad($cell->getData(), $cell->getLength(), ' ', $this->getCellTextAlignment($cell))
-                . ' ',
+            $result .=  $this->addStyles(
+                str_repeat(
+                    ' ',
+                    $cell->getLeftPadding()
+                ) .
+                str_pad(
+                    $cell->getData(),
+                    $cell->getLength(), ' ', $this->getCellTextAlignment($cell)
+                ) .
+                str_repeat(
+                    ' ',
+                    $cell->getRightPadding()
+                ),
                 array_merge($row->getStyles(), $cell->getStyles())
             );
             $result .= $this->addStyles(self::VERTICAL_LINE, $this->tableLayout->getStyles());
@@ -159,7 +181,7 @@ class MysqlStyleRenderer implements Renderer
         $columnAlignment = $this->tableLayout->getHeaderLine()->getHeaderCell($cellId)->getTextAlignment();
         $cellAlignment = $cell->getTextAlignment();
 
-        $alignment = self::DEFAULT_TEXT_ALIGNMENT;
+        $alignment = Defaults::TEXT_ALIGNMENT;
         if (TextAlignments::TEXT_ALIGN_INHERIT !== $columnAlignment) {
             $alignment = $columnAlignment;
         }
