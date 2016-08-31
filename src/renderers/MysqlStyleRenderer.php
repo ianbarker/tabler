@@ -91,30 +91,40 @@ class MysqlStyleRenderer implements Renderer
     {
         $result = $this->addStyles(self::VERTICAL_LINE, $this->tableLayout->getStyles());
 
-        foreach ($this->tableLayout->getHeaderLine()->getHeaderCells() as $header) {
-            /** @var HeaderCell $header */
+        foreach ($this->tableLayout->getHeaderLine()->getHeaderCells() as $headerCell) {
+            /** @var HeaderCell $headerCell */
             $result .=  $this->addStyles(
-                str_pad(
-                    '',
-                    $header->getLeftPadding(),
-                    ' '
-                ) .
-                str_pad(
-                    $header->getTitle(),
-                    $header->getLength(),
-                    ' ',
-                    Defaults::HEADER_ALIGNMENT
-                ) .
-                str_pad(
-                    '',
-                    $header->getRightPadding(),
-                    ' '
-                ),
-                array_merge($this->tableLayout->getHeaderLine()->getStyles(), $header->getStyles())
+                $this->renderHeaderCell($headerCell),
+                array_merge($this->tableLayout->getHeaderLine()->getStyles(), $headerCell->getStyles())
             );
             $result .= $this->addStyles(self::VERTICAL_LINE, $this->tableLayout->getStyles());
         }
         return $result;
+    }
+
+    /**
+     * Renders single header cell with applicable paddings
+     * @param $headerCell
+     * @return string
+     */
+    protected function renderHeaderCell(HeaderCell $headerCell)
+    {
+        return str_pad(
+            '',
+            $headerCell->getLeftPadding(),
+            ' '
+        ) .
+        str_pad(
+            $headerCell->getTitle(),
+            $headerCell->getLength(),
+            ' ',
+            Defaults::HEADER_ALIGNMENT
+        ) .
+        str_pad(
+            '',
+            $headerCell->getRightPadding(),
+            ' '
+        );
     }
 
     /**
@@ -129,23 +139,33 @@ class MysqlStyleRenderer implements Renderer
         foreach ($row->getCells() as $cell) {
             /** @var DataCell $cell */
             $result .=  $this->addStyles(
-                str_repeat(
-                    ' ',
-                    $cell->getLeftPadding()
-                ) .
-                str_pad(
-                    $cell->getData(),
-                    $cell->getLength(), ' ', $this->getCellTextAlignment($cell)
-                ) .
-                str_repeat(
-                    ' ',
-                    $cell->getRightPadding()
-                ),
+                $this->renderDataCell($cell),
                 array_merge($row->getStyles(), $cell->getStyles())
             );
             $result .= $this->addStyles(self::VERTICAL_LINE, $this->tableLayout->getStyles());
         }
         return $result;
+    }
+
+    /**
+     * Renders single data row cell contents with applicable paddings
+     * @param DataCell $cell
+     * @return string
+     */
+    protected function renderDataCell(DataCell $cell)
+    {
+        return str_repeat(
+            ' ',
+            $cell->getLeftPadding()
+        ) .
+        str_pad(
+            $cell->getData(),
+            $cell->getLength(), ' ', $this->getCellTextAlignment($cell)
+        ) .
+        str_repeat(
+            ' ',
+            $cell->getRightPadding()
+        );
     }
 
     /**
@@ -191,4 +211,6 @@ class MysqlStyleRenderer implements Renderer
 
         return $alignment;
     }
+
+
 }
