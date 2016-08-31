@@ -4,34 +4,34 @@ namespace eznio\tabler\renderers;
 
 
 /**
- * mc-style renderer
- * 
+ * Single-line table borders
+ *
  * Example:
  * <pre>
-    ╔═══════╦═════╦═══════════╗
-    ║     a ║  b  ║ cccccccc  ║
-    ╠═══════╬═════╬═══════════╣
-    ║     1 ║     ║           ║
-    ║       ║  2  ║           ║
-    ║       ║     ║ 3         ║
-    ║     1 ║     ║           ║
-    ║       ║  2  ║           ║
-    ║       ║     ║ 3         ║
-    ║     1 ║     ║           ║
-    ║       ║  2  ║           ║
-    ║       ║     ║ 3         ║
-    ╚═══════╩═════╩═══════════╝
- *</pre>
+    ┌───────┬─────┬───────────┐
+    │     a │  b  │ cccccccc  │
+    ├───────┼─────┼───────────┤
+    │     1 │     │           │
+    │       │  2  │           │
+    │       │     │ 3         │
+    │     1 │     │           │
+    │       │  2  │           │
+    │       │     │ 3         │
+    │     1 │     │           │
+    │       │  2  │           │
+    │       │     │ 3         │
+    └───────┴─────┴───────────┘
+ * </pre<
  * @package eznio\tabler\renderers
  */
-class McStyleRenderer extends AsciiTableRenderer
+class SingleLineRenderer extends AsciiTableRenderer
 {
     /**
      * @return mixed
      */
     public function getTopLeftSymbol()
     {
-        return '╔';
+        return '┌';
     }
 
     /**
@@ -39,7 +39,7 @@ class McStyleRenderer extends AsciiTableRenderer
      */
     public function getTopCrossingSymbol()
     {
-        return '╦';
+        return '┬';
     }
 
     /**
@@ -47,7 +47,7 @@ class McStyleRenderer extends AsciiTableRenderer
      */
     public function getTopRightSymbol()
     {
-        return '╗';
+        return '┐';
     }
 
     /**
@@ -55,7 +55,7 @@ class McStyleRenderer extends AsciiTableRenderer
      */
     public function getMiddleLeftSymbol()
     {
-        return '╠';
+        return '├';
     }
 
     /**
@@ -63,7 +63,7 @@ class McStyleRenderer extends AsciiTableRenderer
      */
     public function getMiddleCrossingSymbol()
     {
-        return '╬';
+        return '┼';
     }
 
     /**
@@ -71,7 +71,7 @@ class McStyleRenderer extends AsciiTableRenderer
      */
     public function getMiddleRightSymbol()
     {
-        return '╣';
+        return '┤';
     }
 
     /**
@@ -79,7 +79,7 @@ class McStyleRenderer extends AsciiTableRenderer
      */
     public function getBottomLeftSymbol()
     {
-        return '╚';
+        return '└';
     }
 
     /**
@@ -87,7 +87,7 @@ class McStyleRenderer extends AsciiTableRenderer
      */
     public function getBottomCrossingSymbol()
     {
-        return '╩';
+        return '┴';
     }
 
     /**
@@ -95,7 +95,7 @@ class McStyleRenderer extends AsciiTableRenderer
      */
     public function getBottomRightSymbol()
     {
-        return '╝';
+        return '┘';
     }
 
     /**
@@ -103,7 +103,7 @@ class McStyleRenderer extends AsciiTableRenderer
      */
     public function getHorizontalSymbol()
     {
-        return '═';
+        return '─';
     }
 
     /**
@@ -111,6 +111,6 @@ class McStyleRenderer extends AsciiTableRenderer
      */
     public function getVerticalSymbol()
     {
-        return '║';
+        return '│';
     }
 }

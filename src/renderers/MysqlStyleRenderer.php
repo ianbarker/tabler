@@ -2,16 +2,6 @@
 
 namespace eznio\tabler\renderers;
 
-
-use eznio\tabler\elements\DataCell;
-use eznio\tabler\elements\HeaderCell;
-use eznio\tabler\elements\TableLayout;
-use eznio\tabler\helpers\Styler;
-use eznio\tabler\interfaces\Renderer;
-use eznio\tabler\elements\DataRow;
-use eznio\tabler\references\Defaults;
-use eznio\tabler\references\TextAlignments;
-
 /**
  * Mysql-style table renderer
  *
@@ -28,189 +18,94 @@ use eznio\tabler\references\TextAlignments;
  *
  * @package eznio\tabler\renderers
  */
-class MysqlStyleRenderer implements Renderer
+class MysqlStyleRenderer extends AsciiTableRenderer
 {
-    const VERTICAL_LINE = '|';
-    const HORIZONTAL_LINE = '-';
-    const CROSSING = '+';
-
-    /** @var TableLayout */
-    protected $tableLayout;
-
     /**
-     * Renders the whole table
-     * @param TableLayout $tableLayout
-     * @return string
+     * @return mixed
      */
-    public function render(TableLayout $tableLayout)
+    public function getTopLeftSymbol()
     {
-        $this->tableLayout = $tableLayout;
-        $result = [];
-
-        $result[] = $this->renderSeparator();
-        $result[] = $this->renderHeaderLine();
-        $result[] = $this->renderSeparator();
-        $result = array_merge($result, $this->renderDataGrid());
-        $result[] = $this->renderSeparator();
-
-        return implode(PHP_EOL, $result) . PHP_EOL;
+        return '+';
     }
 
     /**
-     * Renders separator row
-     * @return string
+     * @return mixed
      */
-    protected function renderSeparator()
+    public function getTopCrossingSymbol()
     {
-        $result = '';
-
-        $result .= self::CROSSING;
-        foreach ($this->tableLayout->getHeaderLine()->getHeaderCells() as $header) {
-            /** @var HeaderCell $header */
-            $result .=
-                str_repeat(
-                    self::HORIZONTAL_LINE,
-                    $header->getLength() + $header->getLeftPadding() + $header->getRightPadding()
-                )
-                . self::CROSSING;
-
-        }
-
-        if (0 < count($this->tableLayout->getStyles())) {
-            $result .= Styler::getReset();
-        }
-
-        return $this->addStyles($result, $this->tableLayout->getStyles());
+        return '+';
     }
 
     /**
-     * Renders heading
-     * @return string
+     * @return mixed
      */
-    protected function renderHeaderLine()
+    public function getTopRightSymbol()
     {
-        $result = $this->addStyles(self::VERTICAL_LINE, $this->tableLayout->getStyles());
-
-        foreach ($this->tableLayout->getHeaderLine()->getHeaderCells() as $headerCell) {
-            /** @var HeaderCell $headerCell */
-            $result .=  $this->addStyles(
-                $this->renderHeaderCell($headerCell),
-                array_merge($this->tableLayout->getHeaderLine()->getStyles(), $headerCell->getStyles())
-            );
-            $result .= $this->addStyles(self::VERTICAL_LINE, $this->tableLayout->getStyles());
-        }
-        return $result;
+        return '+';
     }
 
     /**
-     * Renders single header cell with applicable paddings
-     * @param $headerCell
-     * @return string
+     * @return mixed
      */
-    protected function renderHeaderCell(HeaderCell $headerCell)
+    public function getMiddleLeftSymbol()
     {
-        return str_pad(
-            '',
-            $headerCell->getLeftPadding(),
-            ' '
-        ) .
-        str_pad(
-            $headerCell->getTitle(),
-            $headerCell->getLength(),
-            ' ',
-            Defaults::HEADER_ALIGNMENT
-        ) .
-        str_pad(
-            '',
-            $headerCell->getRightPadding(),
-            ' '
-        );
+        return '+';
     }
 
     /**
-     * Renders single data row
-     * @param DataRow $row
-     * @return string
+     * @return mixed
      */
-    protected function renderDataRow(DataRow $row)
+    public function getMiddleCrossingSymbol()
     {
-        $result = $this->addStyles(self::VERTICAL_LINE, $this->tableLayout->getStyles());
-
-        foreach ($row->getCells() as $cell) {
-            /** @var DataCell $cell */
-            $result .=  $this->addStyles(
-                $this->renderDataCell($cell),
-                array_merge($row->getStyles(), $cell->getStyles())
-            );
-            $result .= $this->addStyles(self::VERTICAL_LINE, $this->tableLayout->getStyles());
-        }
-        return $result;
+        return '+';
     }
 
     /**
-     * Renders single data row cell contents with applicable paddings
-     * @param DataCell $cell
-     * @return string
+     * @return mixed
      */
-    protected function renderDataCell(DataCell $cell)
+    public function getMiddleRightSymbol()
     {
-        return str_repeat(
-            ' ',
-            $cell->getLeftPadding()
-        ) .
-        str_pad(
-            $cell->getData(),
-            $cell->getLength(), ' ', $this->getCellTextAlignment($cell)
-        ) .
-        str_repeat(
-            ' ',
-            $cell->getRightPadding()
-        );
+        return '+';
     }
 
     /**
-     * Renders whole data grid
-     * @return array
+     * @return mixed
      */
-    protected function renderDataGrid()
+    public function getBottomLeftSymbol()
     {
-        $result = [];
-        foreach ($this->tableLayout->getDataGrid()->getRows() as $row) {
-            $result[] = $this->renderDataRow($row);
-        }
-        return $result;
+        return '+';
     }
 
     /**
-     * Adds style/reset-style escape sequences to element
-     * @param string $element element to add styles to
-     * @param array $styles array of style constants
-     * @return string
+     * @return mixed
      */
-    protected function addStyles($element, $styles)
+    public function getBottomCrossingSymbol()
     {
-        if (0 < count($styles)) {
-            return Styler::get($styles) . $element . Styler::getReset();
-        }
-        return $element;
+        return '+';
     }
 
-    protected function getCellTextAlignment(DataCell $cell)
+    /**
+     * @return mixed
+     */
+    public function getBottomRightSymbol()
     {
-        $cellId = $cell->getId();
-        $columnAlignment = $this->tableLayout->getHeaderLine()->getHeaderCell($cellId)->getTextAlignment();
-        $cellAlignment = $cell->getTextAlignment();
-
-        $alignment = Defaults::TEXT_ALIGNMENT;
-        if (TextAlignments::TEXT_ALIGN_INHERIT !== $columnAlignment) {
-            $alignment = $columnAlignment;
-        }
-        if (TextAlignments::TEXT_ALIGN_INHERIT !== $cellAlignment) {
-            $alignment = $cellAlignment;
-        }
-
-        return $alignment;
+        return '+';
     }
 
+    /**
+     * @return mixed
+     */
+    public function getHorizontalSymbol()
+    {
+        return '-';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVerticalSymbol()
+    {
+        return '|';
+    }
 
 }

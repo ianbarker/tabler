@@ -22,12 +22,17 @@ class LayoutBuilder
     {
         $headersLine = ElementsFactory::headerLine();
         $headers = $composer->getHeaders();
-        Ar::each($headers, function($header, $headerId) use ($headersLine, $composer) {
-            $headerColumn = ElementsFactory::headerCell()
-                ->setId($headerId)
-                ->setTitle($header)
-                ->setMaxLength(Ar::get($composer->getColumnMaxLengths(), $headerId));
-            $headersLine->addHeaderCell($headerId, $headerColumn);
+        $headersCount = count($headers);
+        Ar::each($headers, function($header, $headerId) use ($headersLine, $composer, $headersCount) {
+            $headersLine->addHeaderCell(
+                $headerId,
+                ElementsFactory::headerCell()
+                    ->setId($headerId)
+                    ->setTitle($header)
+                    ->setMaxLength(Ar::get($composer->getColumnMaxLengths(), $headerId))
+                    ->setIsFirst(0 === count($headersLine->getHeaderCells()))
+                    ->setIsLast(count($headersLine->getHeaderCells()) + 1 === $headersCount)
+            );
         });
         return $headersLine;
     }
@@ -45,11 +50,14 @@ class LayoutBuilder
             $dataRow = ElementsFactory::dataRow()
                 ->setId($key)
                 ->setOrder($key % 2 === 0 ? DataRow::ORDER_EVEN : DataRow::ORDER_ODD);
-            Ar::each($row, function($cell, $cellId) use ($dataRow, $composer) {
+            $dataCellsCount = count($row);
+            Ar::each($row, function($cell, $cellId) use ($dataRow, $composer, $dataCellsCount) {
                 $dataRow->addCell(ElementsFactory::dataCell()
                     ->setId($cellId)
                     ->setData($cell)
                     ->setMaxLength(Ar::get($composer->getColumnMaxLengths(), $cellId))
+                    ->setIsFirst(0 === count($dataRow->getCells()))
+                    ->setIsLast(count($dataRow->getCells()) + 1 === $dataCellsCount)
                 );
             });
             $dataGrid->addRow($dataRow);

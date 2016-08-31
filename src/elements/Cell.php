@@ -25,6 +25,12 @@ class Cell extends Element
     /** @var int */
     private $rightPadding = Defaults::PADDING_RIGHT;
 
+    /** @var bool */
+    private $isFirst = false;
+
+    /** @var bool */
+    private $isLast = false;
+
     /**
      * @return int
      */
@@ -121,6 +127,42 @@ class Cell extends Element
     public function setRightPadding($rightPadding)
     {
         $this->rightPadding = (int) $rightPadding > 0 ? (int) $rightPadding : 0;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsFirst()
+    {
+        return $this->isFirst;
+    }
+
+    /**
+     * @param bool $isFirst
+     * @return $this
+     */
+    public function setIsFirst($isFirst)
+    {
+        $this->isFirst = $isFirst;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsLast()
+    {
+        return $this->isLast;
+    }
+
+    /**
+     * @param bool $isLast
+     * @return $this
+     */
+    public function setIsLast($isLast)
+    {
+        $this->isLast = $isLast;
         return $this;
     }
 }
