@@ -3,10 +3,10 @@
 namespace eznio\db\tests\renderers;
 
 
-use eznio\tabler\renderers\ClearStyleRenderer;
+use eznio\tabler\renderers\McStyleRenderer;
 use eznio\tabler\Tabler;
 
-class ClearStyleRendererTest extends \PHPUnit_Framework_TestCase
+class McStyleRendererTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -23,7 +23,7 @@ class ClearStyleRendererTest extends \PHPUnit_Framework_TestCase
             ->setData($sourceData)
             ->setHeaders($sourceHeaders)
             ->setGuessHeaderNames($shouldGuess)
-            ->setRenderer(new ClearStyleRenderer());
+            ->setRenderer(new McStyleRenderer());
 
         $this->assertEquals(
             trim($expectedOutput),
@@ -44,10 +44,12 @@ class ClearStyleRendererTest extends \PHPUnit_Framework_TestCase
                 ],
                 false,
                 <<<TABLE
- column1  column2  column3 
-    
- 1        2        3       
- 1        2        3
+╔═════════╦═════════╦═════════╗
+║ column1 ║ column2 ║ column3 ║
+╠═════════╬═════════╬═════════╣
+║ 1       ║ 2       ║ 3       ║
+║ 1       ║ 2       ║ 3       ║
+╚═════════╩═════════╩═════════╝
 TABLE
             ],  // Test 1 ends
 
@@ -60,9 +62,11 @@ TABLE
                 ],
                 false,
                 <<<TABLE
- column1  column2  column3 
-    
- 1        2        3
+╔═════════╦═════════╦═════════╗
+║ column1 ║ column2 ║ column3 ║
+╠═════════╬═════════╬═════════╣
+║ 1       ║ 2       ║ 3       ║
+╚═════════╩═════════╩═════════╝
 TABLE
             ],  // Test 2 ends
 
@@ -77,11 +81,13 @@ TABLE
                 ],
                 false,
                 <<<TABLE
- column1 
-  
- 1       
- 2       
- 3
+╔═════════╗
+║ column1 ║
+╠═════════╣
+║ 1       ║
+║ 2       ║
+║ 3       ║
+╚═════════╝
 TABLE
             ],  // Test 3 ends
 
@@ -91,7 +97,12 @@ TABLE
                 [
                 ],
                 false,
-                ''
+                <<<TABLE
+╔
+║
+╠
+╚
+TABLE
             ],  // Test 4 ends
 
             [   // Test 5
@@ -103,11 +114,13 @@ TABLE
                 [],
                 true,
                 <<<TABLE
-a  b  c 
-    
- 1       
-    2    
-       3
+╔═══╦═══╦═══╗
+║ a ║ b ║ c ║
+╠═══╬═══╬═══╣
+║ 1 ║   ║   ║
+║   ║ 2 ║   ║
+║   ║   ║ 3 ║
+╚═══╩═══╩═══╝
 TABLE
             ],  // Test 5 ends
 
@@ -124,11 +137,14 @@ TABLE
                 ],
                 false,
                 <<<TABLE
-Column A  Column B  Column C 
-    
- 1                            
-           2                  
-                     3
+╔══════════╦══════════╦══════════╗
+║ Column A ║ Column B ║ Column C ║
+╠══════════╬══════════╬══════════╣
+║ 1        ║          ║          ║
+║          ║ 2        ║          ║
+║          ║          ║ 3        ║
+╚══════════╩══════════╩══════════╝
+
 TABLE
             ],  // Test 6 ends
 
@@ -144,11 +160,13 @@ TABLE
                 ],
                 false,
                 <<<TABLE
-Column A  Column D       
-     
- 1                        
-                     2    
-                        3
+╔══════════╦══════════╦═══╦═══╗
+║ Column A ║ Column D ║   ║   ║
+╠══════════╬══════════╬═══╬═══╣
+║ 1        ║          ║   ║   ║
+║          ║          ║ 2 ║   ║
+║          ║          ║   ║ 3 ║
+╚══════════╩══════════╩═══╩═══╝
 TABLE
             ],  // Test 7 ends
         ];
