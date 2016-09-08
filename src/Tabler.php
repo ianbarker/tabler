@@ -88,21 +88,6 @@ class Tabler
     }
 
     /**
-     * Build TableLayout structure with all data required to render table
-     * @return TableLayout
-     */
-    public function buildTableLayout()
-    {
-        $composer = new Composer($this->headers, $this->data, $this->guessHeaderNames);
-        $composer->composeTable();
-
-        $builder = new LayoutBuilder();
-        $this->tableLayout = $builder->buildTableLayout($composer);
-
-        return $this->tableLayout;
-    }
-
-    /**
      * Sets rendering engine to render the table
      * @param Renderer $renderer
      * @return $this
@@ -331,6 +316,12 @@ class Tabler
         return $this;
     }
 
+    /**
+     * Set single column left padding value
+     * @param $columnId
+     * @param $leftPadding
+     * @return $this
+     */
     public function setColumnLeftPadding($columnId, $leftPadding)
     {
         if (null === $this->tableLayout) {
@@ -353,6 +344,11 @@ class Tabler
         return $this;
     }
 
+    /**
+     * Get single column left padding value
+     * @param $columnId
+     * @return int
+     */
     public function getColumnLeftPadding($columnId)
     {
         if (null === $this->tableLayout) {
@@ -363,6 +359,12 @@ class Tabler
         return null !== $headerCell ? $headerCell->getLeftPadding() : 0;
     }
 
+    /**
+     * Set single column right padding value
+     * @param $columnId
+     * @param $rightPadding
+     * @return $this
+     */
     public function setColumnRightPadding($columnId, $rightPadding)
     {
         if (null === $this->tableLayout) {
@@ -385,6 +387,11 @@ class Tabler
         return $this;
     }
 
+    /**
+     * Get single column right padding value
+     * @param $columnId
+     * @return int
+     */
     public function getColumnRightPadding($columnId)
     {
         if (null === $this->tableLayout) {
@@ -395,6 +402,12 @@ class Tabler
         return null !== $headerCell ? $headerCell->getRightPadding() : 0;
     }
 
+    /**
+     * Set single column paddings (both left and right) to the same value
+     * @param $columnId
+     * @param $padding
+     * @return $this
+     */
     public function setColumnPadding($columnId, $padding)
     {
         $this->setColumnLeftPadding($columnId, $padding);
@@ -560,5 +573,20 @@ class Tabler
         }
         $cell = $row->getCell($columnId);
         return null === $cell ? $cell : $cell->getTextAlignment();
+    }
+
+    /**
+     * Build TableLayout structure with all data required to render table
+     * @return TableLayout
+     */
+    protected function buildTableLayout()
+    {
+        $composer = new Composer($this->headers, $this->data, $this->guessHeaderNames);
+        $composer->composeTable();
+
+        $builder = new LayoutBuilder();
+        $this->tableLayout = $builder->buildTableLayout($composer);
+
+        return $this->tableLayout;
     }
 }

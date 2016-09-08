@@ -86,6 +86,7 @@ abstract class AsciiTableRenderer implements Renderer
     /**
      * Renders separator row
      * @param $leftSymbol
+     * @param $crossingSymbol
      * @param $rightSymbol
      * @return string
      */
