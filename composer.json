@@ -1,9 +1,9 @@
 {
-  "name": "eznio/ascii-table",
+  "name": "eznio/tabler",
   "description": "CLI ASCII table drawer",
   "license": "MIT",
   "keywords": ["cli", "console", "table", "ascii"],
-  "homepage": "https://github.com/eznio/ascii-table",
+  "homepage": "https://github.com/eznio/tabler",
   "minimum-stability": "dev",
   "require": {
     "php": ">=5.4.0",
