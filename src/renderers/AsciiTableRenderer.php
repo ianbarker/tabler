@@ -7,7 +7,7 @@ use eznio\ar\Ar;
 use eznio\tabler\elements\DataCell;
 use eznio\tabler\elements\HeaderCell;
 use eznio\tabler\elements\TableLayout;
-use eznio\tabler\helpers\Styler;
+use eznio\styler\Styler;
 use eznio\tabler\interfaces\Renderer;
 use eznio\tabler\elements\DataRow;
 use eznio\tabler\references\Defaults;
@@ -108,7 +108,7 @@ abstract class AsciiTableRenderer implements Renderer
         //$result[strlen($result) - 1] = $rightSymbol;
 
         if (0 < count($this->tableLayout->getStyles())) {
-            $result .= Styler::getReset();
+            $result .= Styler::reset();
         }
 
         return $this->addStyles($result, $this->tableLayout->getStyles());
@@ -221,7 +221,7 @@ abstract class AsciiTableRenderer implements Renderer
     protected function addStyles($element, $styles)
     {
         if (0 < count($styles)) {
-            return Styler::get($styles) . $element . Styler::getReset();
+            return Styler::get($styles) . $element . Styler::reset();
         }
         return $element;
     }

@@ -4,7 +4,7 @@ namespace eznio\tabler\elements;
 
 
 use eznio\ar\Ar;
-use eznio\tabler\traits\StyleAware;
+use eznio\styler\traits\StyleAware;
 
 /**
  * Overall dara grid-representing rendering element

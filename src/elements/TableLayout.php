@@ -3,7 +3,7 @@
 namespace eznio\tabler\elements;
 
 
-use eznio\tabler\traits\StyleAware;
+use eznio\styler\traits\StyleAware;
 
 /**
  * Table layout description for further rendering

@@ -22,7 +22,7 @@ class TotalCell extends Cell
 
     /**
      * @param string $title
-     * @return HeaderCell
+     * @return TotalCell
      */
     public function setTitle($title)
     {

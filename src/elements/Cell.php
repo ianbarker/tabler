@@ -4,7 +4,7 @@ namespace eznio\tabler\elements;
 
 
 use eznio\tabler\references\Defaults;
-use eznio\tabler\traits\StyleAware;
+use eznio\styler\traits\StyleAware;
 
 class Cell extends Element
 {

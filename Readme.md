@@ -310,3 +310,36 @@ $tabler->setRenderer(new SingleLineRenderer());
 │ 345      │ 6789     │          │
 └──────────┴──────────┴──────────┘          
 ```
+
+## More radical example
+
+```php
+$tabler = (new \eznio\tabler\Tabler())
+    ->setHeaders(['a' => 'Column A', 'b' => 'Column B', 'c' => 'Column C'])
+    ->setData([
+        ['a' => '123', 'b' => '456', 'c' => '7'],
+        ['a' => '234', 'b' => '567', 'c' => '8'],
+        ['a' => '345', 'b' => '6789', 'c' => '']
+    ])
+    ->setRenderer(new \eznio\tabler\renderers\SingleLineRenderer())
+    ->setGuessHeaderNames(false);
+
+$layout = $tabler->getTableLayout();
+
+$layout->getHeaderLine()->getHeaderCell('a')
+    ->setTextAlignment(\eznio\tabler\references\TextAlignments::TEXT_ALIGN_LEFT)
+    ->setForegroundColor(\eznio\styler\references\ForegroundColors::RED);
+
+$layout->getHeaderLine()->getHeaderCell('b')
+    ->setTextAlignment(\eznio\tabler\references\TextAlignments::TEXT_ALIGN_CENTER)
+    ->setForegroundColor(\eznio\styler\references\ForegroundColors::YELLOW);
+
+$layout->getHeaderLine()->getHeaderCell('c')
+    ->setTextAlignment(\eznio\tabler\references\TextAlignments::TEXT_ALIGN_RIGHT)
+    ->setForegroundColor(\eznio\styler\references\ForegroundColors::GREEN);
+
+$layout->getDataGrid()->getRow(1)->getCell('c')
+    ->setTextAlignment(\eznio\tabler\references\TextAlignments::TEXT_ALIGN_CENTER);
+
+echo $tabler->render($layout);
+```
