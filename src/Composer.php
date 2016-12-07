@@ -155,8 +155,8 @@ class Composer
             foreach ($this->columnNames as $columnId) {
                 $this->columnMaxLengths[$columnId] = max(
                     Ar::get($this->columnMaxLengths, $columnId),
-                    strlen(Ar::get($row, $columnId)),
-                    strlen(Ar::get($this->rawHeaders, $columnId)),
+                    mb_strlen(Ar::get($row, $columnId)),
+                    mb_strlen(Ar::get($this->rawHeaders, $columnId)),
                     0
                 );
             }
@@ -169,8 +169,8 @@ class Composer
     private function gatherColumnMaxLengthsFromHeaders()
     {
         foreach ($this->rawHeaders as $columnId => $item) {
-            if (strlen($item) > Ar::get($this->columnMaxLengths, $columnId)) {
-                $this->columnMaxLengths[$columnId] = strlen($item);
+            if (mb_strlen($item) > Ar::get($this->columnMaxLengths, $columnId)) {
+                $this->columnMaxLengths[$columnId] = mb_strlen($item);
             }
         }
     }
@@ -185,8 +185,8 @@ class Composer
         }
         $headers = array_combine(array_values($this->columnNames), array_values($this->columnNames));
         foreach ($headers as $columnId => $item) {
-            if (strlen($item) > Ar::get($this->columnMaxLengths, $columnId)) {
-                $this->columnMaxLengths[$columnId] = strlen($item);
+            if (mb_strlen($item) > Ar::get($this->columnMaxLengths, $columnId)) {
+                $this->columnMaxLengths[$columnId] = mb_strlen($item);
             }
         }
 
