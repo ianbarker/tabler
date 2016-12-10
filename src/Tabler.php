@@ -444,7 +444,7 @@ class Tabler
             $this->buildTableLayout();
         }
         $row = $this->tableLayout->getDataGrid()->getRow($rowId);
-        return null === $row ? $row : $row->getStyles();
+        return null === $row ? null : $row->getStyles();
     }
 
     /**
@@ -529,7 +529,7 @@ class Tabler
             return [];
         }
         $cell = $row->getCell($columnId);
-        return null === $cell ? $cell : $cell->getStyles();
+        return null === $cell ? null : $cell->getStyles();
     }
 
     /**
@@ -572,7 +572,7 @@ class Tabler
             return null;
         }
         $cell = $row->getCell($columnId);
-        return null === $cell ? $cell : $cell->getTextAlignment();
+        return null === $cell ? null : $cell->getTextAlignment();
     }
 
     /**
@@ -581,6 +581,10 @@ class Tabler
      */
     protected function buildTableLayout()
     {
+        $cleaner = new DataCleaner();
+        $this->headers = $cleaner->cleanupHeaders($this->headers);
+        $this->data = $cleaner->cleanupData($this->data);
+
         $composer = new Composer($this->headers, $this->data, $this->guessHeaderNames);
         $composer->composeTable();
 
