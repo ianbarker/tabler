@@ -4,7 +4,6 @@
   "license": "MIT",
   "keywords": ["cli", "console", "table", "ascii"],
   "homepage": "https://github.com/eznio/tabler",
-  "minimum-stability": "dev",
   "require": {
     "php": ">=5.4.0",
     "eznio/ar": "*",
