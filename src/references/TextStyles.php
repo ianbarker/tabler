@@ -15,11 +15,4 @@ class TextStyles
     const UNDERLINED = 4;
     const INVERTED = 7;
 
-    const ALL = [
-        self::RESET,
-        self::BOLD,
-        self::DIM,
-        self::UNDERLINED,
-        self::INVERTED
-    ];
 }

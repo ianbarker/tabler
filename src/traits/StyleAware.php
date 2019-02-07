@@ -66,7 +66,7 @@ trait StyleAware
      */
     public function setForegroundColor($color)
     {
-        $this->setColor($color, ForegroundColors::ALL);
+        $this->setColor($color, ForegroundColors::all());
     }
 
     /**
@@ -75,7 +75,7 @@ trait StyleAware
      */
     public function getForegroundColor()
     {
-        return $this->getColor(ForegroundColors::ALL);
+        return $this->getColor(ForegroundColors::all());
     }
 
     /**
@@ -85,7 +85,7 @@ trait StyleAware
      */
     public function setBackgroundColor($color)
     {
-        $this->setColor($color, BackgroundColors::ALL);
+        $this->setColor($color, BackgroundColors::all());
     }
 
     /**
@@ -94,7 +94,7 @@ trait StyleAware
      */
     public function getBackgroundColor()
     {
-        return $this->getColor(BackgroundColors::ALL);
+        return $this->getColor(BackgroundColors::all());
     }
 
     /**

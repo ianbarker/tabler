@@ -17,7 +17,6 @@ class DataRow extends Element
     const ORDER_ANY = 1;
     const ORDER_ODD = 2;
     const ORDER_EVEN = 3;
-    const ORDERS = [self::ORDER_ANY, self::ORDER_ODD, self::ORDER_EVEN];
 
     /**
      * @var array List of row's cells
@@ -76,7 +75,7 @@ class DataRow extends Element
      */
     public function setOrder($order)
     {
-        if (in_array($order, self::ORDERS)) {
+        if (in_array($order, [self::ORDER_ANY, self::ORDER_ODD, self::ORDER_EVEN])) {
             $this->order = $order;
         }
         return $this;

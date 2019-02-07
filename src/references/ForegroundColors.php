@@ -25,24 +25,28 @@ class ForegroundColors
     const LIGHT_MAGENTA = 95;
     const LIGHT_CYAN = 96;
     const WHITE = 97;
-    
-    const ALL = [
-        self:: DEFAULT_COLOR,
-        self:: BLACK,
-        self:: RED,
-        self:: GREEN,
-        self:: YELLOW,
-        self:: BLUE,
-        self:: MAGENTA,
-        self:: CYAN,
-        self:: LIGHT_GRAY,
-        self:: DARK_GRAY,
-        self:: LIGHT_RED,
-        self:: LIGHT_GREEN,
-        self:: LIGHT_YELLOW,
-        self:: LIGHT_BLUE,
-        self:: LIGHT_MAGENTA,
-        self:: LIGHT_CYAN,
-        self:: WHITE
-    ];
+
+    public static function all()
+    {
+        return [
+            self:: DEFAULT_COLOR,
+            self:: BLACK,
+            self:: RED,
+            self:: GREEN,
+            self:: YELLOW,
+            self:: BLUE,
+            self:: MAGENTA,
+            self:: CYAN,
+            self:: LIGHT_GRAY,
+            self:: DARK_GRAY,
+            self:: LIGHT_RED,
+            self:: LIGHT_GREEN,
+            self:: LIGHT_YELLOW,
+            self:: LIGHT_BLUE,
+            self:: LIGHT_MAGENTA,
+            self:: LIGHT_CYAN,
+            self:: WHITE,
+        ];
+    }
+
 }

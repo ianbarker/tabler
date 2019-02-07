@@ -10,10 +10,4 @@ class TextAlignments
     const TEXT_ALIGN_CENTER = STR_PAD_BOTH;
     const TEXT_ALIGN_INHERIT = null;
 
-    const ALL = [
-        self::TEXT_ALIGN_CENTER,
-        self::TEXT_ALIGN_LEFT,
-        self::TEXT_ALIGN_RIGHT,
-        self::TEXT_ALIGN_INHERIT
-    ];
 }
